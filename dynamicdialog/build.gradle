@@ -1,0 +1,81 @@
+apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'dynamicdialog'
+    bintrayName = 'dynamicdialog'
+
+    publishedGroupId = 'com.multipledialog'
+    libraryName = 'dynamicdialog'
+    artifact = 'dynamicdialog'
+
+    libraryDescription = 'Show any types of ads.'
+
+    siteUrl = 'https://github.com/nitishk311/bannerads'
+    gitUrl = 'https://github.com/nitishk311/bannerads.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'multipledialog'
+    developerName = 'Raja Babu'
+    developerEmail = 'addbycart@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.mcxiaoke.volley:library-aar:1.0.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+}
+
+task deleteJar(type: Delete){
+    delete 'libs/adsbannerlib.jar'
+}
+
+task createJar(type: Copy){
+    from('build/intermediates/bundles/release/')
+    into('libs/')
+    include('classes.jar')
+    rename('classes.jar', 'adsbannerlib.jar')
+}
+
+createJar.dependsOn(deleteJar, build)
+
+//Add these lines to publish library to bintray
+//Place it at the end of the file
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
